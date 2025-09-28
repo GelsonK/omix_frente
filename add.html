@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Login - Administrativo</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; font-family:'Inter', Arial, sans-serif; }
+  body { 
+    display:flex; justify-content:center; align-items:center; height:100vh; 
+    background-color: rgb(1, 57, 110); color:#fff;
+  }
+
+  .login-container {
+    background:#fff; color:#1e2a38; padding:40px 35px; border-radius:16px; 
+    width:100%; max-width:380px; box-shadow:0 10px 30px rgba(0,0,0,0.25); 
+    display:flex; flex-direction:column; align-items:center;
+  }
+
+  h2 { margin-bottom:25px; font-size:1.8rem; font-weight:700; }
+
+  input {
+    width:100%; padding:14px 12px; margin-bottom:20px; border-radius:8px; border:1px solid #ccc; 
+    font-size:1rem; transition:all 0.3s;
+  }
+  input:focus { border-color: rgb(1, 57, 110); outline:none; box-shadow:0 0 10px rgba(1,57,110,0.3); }
+
+  button {
+    width:100%; padding:14px; background-color: rgb(1, 57, 110); color:#fff; 
+    border:none; border-radius:8px; font-size:1rem; font-weight:600; cursor:pointer;
+    transition:all 0.3s;
+  }
+  button:hover { background-color: rgb(0, 45, 88); }
+
+  .erro {
+    width:100%; text-align:center; margin-bottom:15px; color:#e74c3c; font-weight:600;
+  }
+
+  @media(max-width:450px) {
+    .login-container { padding:30px 20px; }
+    h2 { font-size:1.5rem; }
+    input, button { font-size:0.95rem; padding:12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Login Administrativo</h2>
+  <div class="erro" id="mensagemErro"></div>
+  <input type="text" id="nome" placeholder="Nome de usuário" />
+  <input type="password" id="senha" placeholder="Senha" />
+  <button onclick="fazerLogin()">Entrar</button>
+</div>
+
+<script>
+async function fazerLogin() {
+  const nome = document.getElementById("nome").value.trim();
+  const senha = document.getElementById("senha").value.trim();
+  const mensagemErro = document.getElementById("mensagemErro");
+  mensagemErro.textContent = "";
+
+  if(!nome || !senha) {
+    mensagemErro.textContent = "Preencha todos os campos.";
+    return;
+  }
+
+  try {
+    const res = await fetch("https://omix-front.onrender.com/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, senha })
+    });
+
+    if(res.status === 200){
+      const data = await res.json();
+      alert("✅ " + data.message);
+      window.location.href = "login.html"; // redireciona para o login.html na raiz
+    } else if(res.status === 401){
+      const data = await res.json();
+      mensagemErro.textContent = "❌ " + data.message;
+    } else {
+      mensagemErro.textContent = "Erro inesperado. Tente novamente.";
+    }
+  } catch(err){
+    mensagemErro.textContent = "Não foi possível conectar ao servidor.";
+    console.error(err);
+  }
+}
+</script>
+
+</body>
+</html>

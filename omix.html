@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Concluído - OMIX</title>
+    <link rel="stylesheet" href="./style/omix.css">
+</head>
+
+<body>
+
+    <div class="pro">
+        <div>
+
+            <img src="./icon/anime.gif" alt="">
+            <p>Seus dados estão sendo processados</p>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <h1>Cadastro Realizado com Sucesso!</h1>
+        <img id="userImg" src="" alt="Usuário" class="user-img">
+        <p>Parabéns, seu cadastro foi realizado com sucesso.</p>
+        <p>Seu <span class="highlight">OMIX</span> é: <span id="userOmix"></span></p>
+        <p>Anote esse número, pois ele será necessário para verificar se você for aprovado.</p>
+        <p><b>Nome:</b> <span id="userNome"></span></p>
+        <p><b>Sala:</b> <span id="userSala"></span></p>
+        <p><b>Período:</b> <span id="userPeriodo"></span></p>
+        <p><b>Status:</b> <span id="userStatus" class="status"></span></p>
+        <br>
+        <br>
+        <button id="bb" onclick="oo()">Acompanhar Cadastro</button>
+    </div>
+
+    <!-- Fullscreen imagem -->
+    <div class="fullscreen" id="fullscreen">
+        <img id="fsImg" src="" alt="Usuário">
+      
+    </div>
+
+    <script>
+        var pro = document.querySelector(".pro")
+        pro.classList.add("ver_c")
+        const userImg = document.getElementById('userImg');
+        const userOmix = document.getElementById('userOmix');
+        const userNome = document.getElementById('userNome');
+        const userSala = document.getElementById('userSala');
+        const userPeriodo = document.getElementById('userPeriodo');
+        const userStatus = document.getElementById('userStatus');
+        const fullscreen = document.getElementById('fullscreen');
+        const fsImg = document.getElementById('fsImg');
+
+        // Lê o OMIX do localStorage
+        const omix = localStorage.getItem('omix');
+
+        if (!omix) {
+            alert("OMIX não encontrado. Volte para a página de cadastro.");
+        } else {
+            // Requisição para buscar dados do usuário
+            fetch(`https://omix-front.onrender.com/user/omix/${omix}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    pro.classList.remove("ver_c")
+                    userImg.src = `https://omix-front.onrender.com${data.imagem || '/uploads/default.png'}`;
+                    userOmix.textContent = data.omix;
+                    userNome.textContent = data.nome;
+                    userSala.textContent = data.sala;
+                    userPeriodo.textContent = data.periodo;
+                    userStatus.textContent = data.status;
+                    userStatus.className = `status ${data.status}`;
+                })
+                .catch(err => console.error(err));
+        }
+
+        // Fullscreen imagem
+        userImg.onclick = () => {
+            fsImg.src = userImg.src;
+            fullscreen.classList.add('active');
+        }
+        fullscreen.onclick = () => fullscreen.classList.remove('active');
+
+        function oo(){
+            window.location.href ='./acompanha.html'
+        }
+    </script>
+
+    
+
+</body>
+
+</html>

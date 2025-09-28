@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Escola</title>
+    <link rel="stylesheet" href="./style/cadastro.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <div class="pro">
+        <div>
+
+            <img src="./icon/anime.gif" alt="">
+            <p>Seus dados estão sendo processados</p>
+        </div>
+    </div>
+
+    <div class="alerta">
+        <p id="pp">Erro ao enviar cadastro. Verifique os dados do formulário e tente novamente</p>
+    </div>
+
+    <div class="mobil" id="mobil">
+         <p onclick="rota(1)">OMIX</p>
+         <p onclick="rota(2)">Cadastrar</p>
+         <p onclick="rota(4)">Acompanhar</p>
+        <p onclick="rota(3)">Seção Sobre</p>
+    </div>
+    <div class="header">
+        <img src="./icon/meno.png" alt="" onclick="start()" id="meno">
+        <h4>OMIX</h4>
+
+    </div>
+
+    <main>
+        <div class="pai">
+            <form action="" id="meuForm">
+
+                <section>
+                    <h2>Dados Pessoais</h2>
+                    <p>Nome completo</p>
+                    <input type="text" placeholder="Nome completo" required name="nome">
+                    <p>Data de nascimento</p>
+                    <input type="date" placeholder="Data de nascimento" required name="data">
+                    <p>Gênero</p>
+                    <select required name="genero">
+                        <option>Masculino</option>
+                        <option>Feminino</option>
+                    </select>
+                    <p>Telefone</p>
+                    <input type="tel" placeholder="Telefone" required name="telefone">
+
+                </section>
+
+                <section>
+                    <h2>Dados Escolares</h2>
+                    <p>Sala</p>
+                    <select class="compri" required name="sala">
+                        <option value="">Selecione</option>
+                        <option value="1">Sala 1</option>
+                        <option value="2">Sala 2</option>
+                        <option value="3">Sala 3</option>
+                        <option value="4">Sala 4</option>
+                        <option value="5">Sala 5</option>
+                        <option value="6">Sala 6</option>
+                        <option value="7">Sala 7</option>
+                        <option value="8">Sala 8</option>
+                        <option value="9">Sala 9</option>
+                        <option value="10">Sala 10</option>
+                        <option value="11">Sala 11</option>
+                        <option value="12">Sala 12</option>
+                        <option value="13">Sala 13</option>
+                        <option value="14">Sala 14</option>
+                    </select>
+                    <p>Período</p>
+                    <select required name="periodo">
+                        <option value="">Selecione</option>
+                        <option value="Manhã">Matutino</option>
+                        <option value="Tarde">Vespertino</option>
+                        <option value="Noite">Noturno</option>
+                    </select>
+
+                </section>
+                <h2 style="text-align: center;">Imagem</h2>
+                <!-- Campo de imagem leve -->
+                <div class="upload-mini">
+                    <input type="file" id="foto" name="foto" accept="image/*" required hidden />
+                    <label for="foto" class="upload-label">+</label>
+                    <img id="preview" alt="Prévia" />
+                </div>
+
+
+                <section>
+                    <h2>Porque desejo participar do grupo de programação?</h2>
+                    <textarea rows="4" placeholder="Escreva aqui..." name="text" required id="tt"></textarea>
+                    <br>
+
+                    <button>Enviar Cadastro</button>
+                </section>
+
+
+
+            </form>
+
+        </div>
+
+        <div class="img">
+            <img src="./img/lo.png" alt="">
+            <div class="text">
+                <h3>Confirmação do seu cadastramento</h3>
+                <p>Após concluir o seu cadastramento, será gerado automaticamente um número OMIX composto por 6 dígitos.
+                    Esse número é exclusivo e servirá como sua identificação dentro do sistema. Com ele, você poderá
+                    acompanhar o andamento do seu cadastro, confirmar sua participação no grupo e utilizá-lo em futuras
+                    consultas ou atualizações de dados.</p>
+                <button onclick="omix()">Acompanhar Cadastro</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="./src/ver.js"></script>
+    <script src="./src/enviar_dados.js"></script>
+</body>
+
+</html>

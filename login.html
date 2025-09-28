@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="./img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo - Usuários</title>
+  <style>
+    /* Reset e tipografia */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      color: #2c3e50;
+    }
+
+    /* Header */
+    header {
+      background: #1e2a38;
+      color: #fff;
+      padding: 20px 30px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.5rem;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Main container */
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    /* Tabela desktop */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    thead {
+      background: #1e2a38;
+      color: #fff;
+    }
+
+    thead th {
+      padding: 12px 10px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    tbody td {
+      padding: 12px 10px;
+      font-size: 0.9rem;
+      vertical-align: middle;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Imagem do usuário */
+    img.user-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    img.user-img:hover {
+      transform: scale(1.2);
+    }
+
+    /* Status */
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status.pendente {
+      background: #f39c12;
+      color: #fff;
+    }
+
+    .status.aprovado {
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .status.reprovado {
+      background: #c0392b;
+      color: #fff;
+    }
+
+    /* Botões */
+    button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      transition: all 0.2s;
+    }
+
+    button.aprovar {
+      background: #27ae60;
+    }
+
+    button.aprovar:hover {
+      background: #1f7a42;
+    }
+
+    button.reprovar {
+      background: #c0392b;
+    }
+
+    button.reprovar:hover {
+      background: #8e2920;
+    }
+
+    /* Modal detalhes */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 999;
+    }
+
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 14px;
+      padding: 25px 30px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      text-align: center;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-content img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 2px solid #1e2a38;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      object-fit: cover;
+    }
+
+    .modal-content img:hover {
+      transform: scale(1.05);
+    }
+
+    .modal-content p {
+      margin: 6px 0;
+      font-size: 0.95rem;
+    }
+
+    .modal-content p b {
+      color: #1e2a38;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #1e2a38;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #e74c3c;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    /* Fullscreen imagem */
+    #fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 9999;
+    }
+
+    #fullscreen.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    #fullscreen img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 10px;
+      object-fit: contain;
+      cursor: zoom-out;
+    }
+
+    /* Mobile cards */
+    .mobile-card {
+      display: none;
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .mobile-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .mobile-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 2px solid #1e2a38;
+    }
+
+    .mobile-card .info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .mobile-card .info p {
+      margin: 3px 0;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .mobile-card .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Responsividade */
+    @media (max-width:900px) {
+      table {
+        display: none;
+      }
+
+      .mobile-card {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>Painel Administrativo - Usuários</header>
+
+  <main>
+    <table id="usuariosTable">
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nome</th>
+          <th>OMIX</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="mobileContainer"></div>
+  </main>
+
+  <!-- Modal Detalhes -->
+  <div class="modal" id="modalDetalhes">
+    <div class="modal-content">
+      <span class="modal-close" id="fecharModal">&times;</span>
+      <img id="modalImg" src="" alt="Usuário">
+      <p><b>Nome:</b> <span id="modalNome"></span></p>
+      <p><b>OMIX:</b> <span id="modalOmix"></span></p>
+      <p><b>Data Nascimento:</b> <span id="modalData"></span></p>
+      <p><b>Gênero:</b> <span id="modalGenero"></span></p>
+      <p><b>Telefone:</b> <span id="modalTelefone"></span></p>
+      <p><b>Sala:</b> <span id="modalSala"></span></p>
+      <p><b>Período:</b> <span id="modalPeriodo"></span></p>
+      <p><b>Observações:</b> <span id="modalText"></span></p>
+      <p><b>Status:</b> <span id="modalStatus" class="status"></span></p>
+      <div class="modal-buttons">
+        <button class="aprovar" id="btnAprovar">Aprovar</button>
+        <button class="reprovar" id="btnReprovar">Reprovar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen imagem -->
+  <div id="fullscreen"><img id="fsImg" src="" alt="Usuário"></div>
+
+  <script>
+    const tbody = document.querySelector("#usuariosTable tbody");
+    const modal = document.getElementById('modalDetalhes');
+    const fecharModal = document.getElementById('fecharModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalNome = document.getElementById('modalNome');
+    const modalOmix = document.getElementById('modalOmix');
+    const modalData = document.getElementById('modalData');
+    const modalGenero = document.getElementById('modalGenero');
+    const modalTelefone = document.getElementById('modalTelefone');
+    const modalSala = document.getElementById('modalSala');
+    const modalPeriodo = document.getElementById('modalPeriodo');
+    const modalText = document.getElementById('modalText');
+    const modalStatus = document.getElementById('modalStatus');
+    const btnAprovar = document.getElementById('btnAprovar');
+    const btnReprovar = document.getElementById('btnReprovar');
+    const fullscreen = document.getElementById('fullscreen');
+    const fsImg = document.getElementById('fsImg');
+    const mobileContainer = document.getElementById('mobileContainer');
+
+    let usuarios = [];
+    let usuarioAtual = null;
+
+    async function carregarUsuarios() {
+      try {
+        const res = await fetch("https://omix-front.onrender.com/users");
+        usuarios = await res.json();
+        tbody.innerHTML = "";
+        mobileContainer.innerHTML = "";
+
+        usuarios.forEach(user => {
+          // Desktop row
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+        <td data-label="Foto"><img class="user-img" src="https://omix-front.onrender.com${user.imagem || '/uploads/default.png'}" alt="${user.nome}"></td>
+        <td data-label="Nome">${user.nome}</td>
+        <td data-label="OMIX">${user.omix}</td>
+        <td data-label="Status"><span class="status ${user.status}">${user.status}</span></td>
+        <td data-label="Ações">
+          <button class="aprovar">Aprovar</button>
+          <button class="reprovar">Reprovar</button>
+        </td>
+      `;
+          tbody.appendChild(tr);
+          tr.querySelector('.user-img').onclick = (e) => { e.stopPropagation(); abrirFullscreen(user.imagem); };
+          tr.querySelector('.aprovar').onclick = (e) => { e.stopPropagation(); atualizarStatus(user, 'aprovar'); }
+          tr.querySelector('.reprovar').onclick = (e) => { e.stopPropagation(); atualizarStatus(user, 'reprovar'); }
+          tr.onclick = () => abrirModal(user);
+
+          // Mobile card
+          const card = document.createElement('div');
+          card.className = 'mobile-card';
+          card.innerHTML = `
+        <img src="https://omix-front.onrender.com${user.imagem || '/uploads/default.png'}" alt="${user.nome}">
+        <div class="info">
+          <p>${user.nome}</p>
+          <p>OMIX: ${user.omix}</p>
+          <span class="status ${user.status}">${user.status}</span>
+        </div>
+        <div class="actions">
+          <button class="aprovar">Aprovar</button>
+          <button class="reprovar">Reprovar</button>
+        </div>
+      `;
+          mobileContainer.appendChild(card);
+          card.querySelector('img').onclick = (e) => { e.stopPropagation(); abrirFullscreen(user.imagem); };
+          card.querySelector('.aprovar').onclick = (e) => { e.stopPropagation(); atualizarStatus(user, 'aprovar'); }
+          card.querySelector('.reprovar').onclick = (e) => { e.stopPropagation(); atualizarStatus(user, 'reprovar'); }
+          card.onclick = () => abrirModal(user);
+        });
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = "<tr><td colspan='5'>Erro ao carregar usuários.</td></tr>";
+        mobileContainer.innerHTML = "<p style='text-align:center; margin-top:20px;'>Erro ao carregar usuários.</p>";
+      }
+    }
+
+    function abrirModal(user) {
+      usuarioAtual = user;
+      modalImg.src = `https://omix-front.onrender.com${user.imagem}`;
+      modalNome.textContent = user.nome;
+      modalOmix.textContent = user.omix;
+      modalData.textContent = user.data;
+      modalGenero.textContent = user.genero;
+      modalTelefone.textContent = user.telefone;
+      modalSala.textContent = user.sala;
+      modalPeriodo.textContent = user.periodo;
+      modalText.textContent = user.text || "Nenhuma";
+      modalStatus.textContent = user.status;
+      modalStatus.className = `status ${user.status}`;
+      modal.classList.add('active');
+    }
+
+    function fecharModalFunc() {
+      modal.classList.remove('active');
+    }
+
+    btnAprovar.onclick = () => { if (usuarioAtual) atualizarStatus(usuarioAtual, 'aprovar'); }
+    btnReprovar.onclick = () => { if (usuarioAtual) atualizarStatus(usuarioAtual, 'reprovar'); }
+    fecharModal.onclick = fecharModalFunc;
+    modal.onclick = (e) => { if (e.target === modal) fecharModalFunc(); }
+
+    // Fullscreen imagem
+    function abrirFullscreen(imgPath) {
+      fsImg.src = `https://omix-front.onrender.com${imgPath}`;
+      fullscreen.classList.add('active');
+    }
+    fullscreen.onclick = () => fullscreen.classList.remove('active');
+
+    async function atualizarStatus(user, acao) {
+      try {
+        const res = await fetch(`https://omix-front.onrender.com/user/${acao}/${user.omix}`, { method: "PUT" });
+        const data = await res.json();
+        if (data.usuario) {
+          user.status = data.usuario.status;
+          carregarUsuarios();
+          if (usuarioAtual && usuarioAtual.omix === user.omix) {
+            modalStatus.textContent = user.status;
+            modalStatus.className = `status ${user.status}`;
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao atualizar status do usuário.");
+      }
+    }
+
+    // Inicializa
+    carregarUsuarios();
+  </script>
+
+</body>
+
+</html>

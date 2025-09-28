@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastramento de candidatos</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+  
+
+
+    <div class="mobil" id="mobil">
+         <p onclick="rota(1)">OMIX</p>
+         <p onclick="rota(2)">Cadastrar</p>
+         <p onclick="rota(4)">Acompanhar</p>
+        <p onclick="rota(3)">Seção Sobre</p>
+        <p onclick="rota(5)">Administrador</p>
+    </div>
+    <header>
+        <img src="./icon/meno.png" alt="" onclick="start()" id="meno">
+        <h4>OMIX</h4>
+
+    </header>
+
+    <main>
+
+        <div class="corpo_1">
+
+
+            <div class="text">
+                <img src="./img/cada.gif" alt="">
+                <h3><span>Bem-vindo</span> ao OMIX</h3>
+                <p>Faça já o seu cadastro gratuito e junte-se ao nosso grupo!</p>
+                <p>Após concluir o cadastramento, você receberá um número exclusivo de 6 dígitos no formato 2xxxxx.
+                    Guarde esse número com atenção, pois ele será indispensável para a verificação e aprovação
+                    oficial no dia 20 de Agosto de 2025.
+
+                    O cadastramento garante que você faça parte da nossa base oficial e possa participar de todas as
+                    etapas futuras do processo.
+
+                    Preencha corretamente os seus dados, confirme o cadastro e receba imediatamente o seu número
+                    identificador.</p>
+                <br>
+                <button onclick="cadastrar()">Cadastrar</button>
+            </div>
+
+
+        </div>
+
+
+        <div class="corpo_1 corpo_2">
+
+            <img src="./img/dados.gif" alt="">
+
+            <div class="corpo_2_text">
+                <h3>Acompanha o Seu Cadastramento</h3>
+                <p>Aqui poderás acompanhar em tempo real o andamento do teu cadastramento.
+                    Nesta aba será possível verificar se o teu cadastro foi aprovado ou não, utilizando o número de 6
+                    dígitos (2xxxxx) que recebeste no momento da inscrição.</p>
+                <br>
+                <h4>Basta inserir o teu número identificador e consultar o estado do processo.</h4>
+                <ol>
+                    <li>Em análise → O teu cadastro está sendo verificado.</li>
+                    <li>Aprovado → O teu cadastro foi validado com sucesso.</li>
+                    <li>Reprovado → O cadastro não foi validado (poderás repetir o processo se necessário).</li>
+
+                </ol>
+                <br>
+                <h5>⚠️ Nota Importante: A confirmação final será divulgada no dia 20 de Agosto de 2025.</h5>
+                <button onclick="omix()">Acompanhar</button>
+            </div>
+
+        </div>
+
+        <!-- Sobre-->
+
+        <aside>
+            <p> © 2025 OMIX — Grupo Tecnológico de Programação • Escola Kimbanguista 18 de Novembro</p>
+
+        </aside>
+
+    </main>
+
+    <script src="src/ver.js"></script>
+</body>
+
+</html>
