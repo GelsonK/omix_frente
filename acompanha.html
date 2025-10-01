@@ -269,7 +269,7 @@
       justify-content: center;
       display: none;
     }
-    
+
     .pro div {
       padding: 20px 0px;
       width: 100%;
@@ -341,7 +341,7 @@
         const card = document.createElement("div");
         card.className = "resultado-card";
         card.innerHTML = `
-      <img src="https://omix-front.onrender.com${data.imagem}" alt="${data.nome}">
+      <img src=${data.imagem} alt="${data.nome}">
       <div class="card-info">
         <p class="nome">${data.nome}</p>
         <p class="omix">OMIX: ${data.omix}</p>
@@ -358,7 +358,7 @@
           const painel = document.getElementById("painel");
           const painelContent = document.getElementById("painelContent");
           painelContent.innerHTML = `
-        <img src="https://omix-front.onrender.com${data.imagem}" alt="${data.nome}">
+        <img src=${data.imagem} alt="${data.nome}">
         <p><b>Nome:</b> ${data.nome}</p>
         <p><b>OMIX:</b> ${data.omix}</p>
     
